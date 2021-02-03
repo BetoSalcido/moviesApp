@@ -6,15 +6,19 @@
 //
 
 import UIKit
+import Reachability
 
 class MoviesVC: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    private let reachability = try! Reachability()
     private let moviesDataModel = MoviesDataModel()
     private var orderBy: String = OrderOptions.popoular
     private var movies: Movies?
     private var page: Int = 1
+    
+    var lastContentOffset: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +61,32 @@ class MoviesVC: UIViewController {
          }
      }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (self.lastContentOffset < scrollView.contentOffset.y) {
+            self.navigationController!.navigationBar.isTranslucent = true
+            self.navigationController!.navigationBar.isOpaque = true
+            
+        } else if (self.lastContentOffset > scrollView.contentOffset.y) {
+            self.navigationController!.navigationBar.isTranslucent = false
+            self.navigationController!.navigationBar.isOpaque = false
+        }
+    }
+    
+}
+
+// MARK: - Segues
+extension MoviesVC {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if reachability.connection != .unavailable {
+            if segue.identifier == "movieDetail" {
+                let vc = segue.destination as! MovieDetailVC
+                vc.movieId = UInt(sender as! Int)
+            }
+        } else {
+            AlertManager.showConnectionError(on: self, handlerAction: nil)
+        }
+
+    }
 }
 
 // MARK: - Buttons and actions methos
@@ -90,7 +120,7 @@ extension MoviesVC : UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension MoviesVC : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        performSegue(withIdentifier: "movieDetail", sender: movies?.results?[indexPath.row].id ?? 0)
     }
 }
 
@@ -134,6 +164,4 @@ extension MoviesVC: MoviesDataModelDelegate {
             AlertManager.showOverallMessage(on: self, handlerAction: nil)
         }
     }
-    
-    
 }

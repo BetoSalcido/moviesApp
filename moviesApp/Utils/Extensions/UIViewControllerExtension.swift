@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 
+@objc
 extension UIViewController {
     
     /// Method to add a loadingView in the mainView
-    func showLoadingView(transparent: Bool = true) {
+    @objc func showLoadingView(transparent: Bool = true) {
         DispatchQueue.main.async {
             let container = UIView()
             let activityIndicator = UIActivityIndicatorView()
@@ -38,7 +39,7 @@ extension UIViewController {
     }
     
     /// Method to remove a loadingView in the mainView
-    func removeLoadingView() {
+    @objc func removeLoadingView() {
         DispatchQueue.main.async {
             for view in self.view.subviews {
                 if (view.tag == 10000) {
@@ -47,4 +48,16 @@ extension UIViewController {
             }
         }
     }
+    
+    @objc func showSimpleAlertController(title: String?, message: String?, actionTitle: String, actionBlock: ((UIAlertAction) -> Void)?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: actionTitle, style: .default, handler: actionBlock)
+        alertController.addAction(action)
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
 }
+
