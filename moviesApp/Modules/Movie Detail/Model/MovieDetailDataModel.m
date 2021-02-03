@@ -10,8 +10,8 @@
 @implementation MovieDetailDataModel
 @synthesize delegate;
 
-- (void)getMovieDetail:(NSInteger)movieId {
-    NSDictionary * data = @{@"movieId": @(movieId)};
+- (void)getMovieDetail:(NSDictionary*)movie {
+    NSDictionary * data = @{@"movieId": movie[@"movieId"], @"language": movie[@"language"]};
     
     __weak __typeof__(self) weakSelf = self;
     [MovieDetailRequest requestMovieDetail: data completionHandler:^(NSDictionary * _Nonnull response, NSError * _Nonnull error) {

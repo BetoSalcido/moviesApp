@@ -91,7 +91,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="112"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chappie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vI-io-9SE">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chappie" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vI-io-9SE">
                                                     <rect key="frame" x="20" y="11" width="374" height="90"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -211,8 +211,11 @@
                             <constraint firstAttribute="bottom" secondItem="F5f-C7-MHG" secondAttribute="bottom" id="ud1-T8-1oo"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="aAF-Vp-NeG"/>
+                    <navigationItem key="navigationItem" id="aAF-Vp-NeG">
+                        <barButtonItem key="rightBarButtonItem" title="EN" id="yiU-F7-jVc"/>
+                    </navigationItem>
                     <connections>
+                        <outlet property="languageButton" destination="yiU-F7-jVc" id="zCX-J9-KQ7"/>
                         <outlet property="tableView" destination="F5f-C7-MHG" id="Qsx-GL-zgX"/>
                     </connections>
                 </viewController>
