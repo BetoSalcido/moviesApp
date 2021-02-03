@@ -17,8 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
     MovieDetailDataModel *movieDetailDataModel;
 }
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *languageButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) NSUInteger movieId;
+@property (nonatomic) NSDictionary * dataToSend;
 @property (nonatomic) NSDictionary * movieDetail;
 
 @end

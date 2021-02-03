@@ -12,7 +12,7 @@
 + (void)requestMovieDetail:(NSDictionary *)data completionHandler:(void (^)(NSDictionary * _Nonnull, NSError * _Nonnull))completionHandler {
     NSDictionary * appConfig = [GetAppConfig getValusFromAppConfig];
     if ([data objectForKey: @"movieId"]) {
-        NSString * url =  [NSString stringWithFormat:@"%@%@%@%@",  [appConfig objectForKey:@"apiUrl"], data[@"movieId"], @"?api_key=", [appConfig objectForKey:@"apiKey"]];
+        NSString * url =  [NSString stringWithFormat:@"%@%@%@%@&language=%@",  [appConfig objectForKey:@"apiUrl"], data[@"movieId"], @"?api_key=", [appConfig objectForKey:@"apiKey"], [data objectForKey:@"language"]];
         
         [RequestManager request: url httpMethod:HttpMethodGet parameters: @{} completionHandler:^(id  _Nonnull response, NSError * _Nonnull error) {
             if(!error ) {

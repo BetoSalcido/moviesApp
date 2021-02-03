@@ -16,32 +16,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self showLoadingViewWithTransparent:true];
+    [self configView];
     [self configModel];
     [self configTableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self showLoadingViewWithTransparent:false];
-    [movieDetailDataModel getMovieDetail: _movieId];
-}
-
-- (void)didReceiveMovieDetail:(nonnull NSDictionary *)response {
-    [self removeLoadingView];
-    if ([[response objectForKey:@"error"] boolValue]) {
-        __weak __typeof__(self) weakSelf = self;
-        [self showSimpleAlertControllerWithTitle: @"Lo sentimos" message: @"Ocurrió un problema inesperado. Por favor, intenta de nuevo." actionTitle: @"Cerrar" actionBlock: ^(UIAlertAction * _Nonnull action) {
-            [weakSelf.navigationController popViewControllerAnimated:YES];
-        }];
-        
-    } else {
-        _movieDetail = response;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self->_tableView setHidden: false];
-            [self->_tableView reloadData];
-        });
-
-    }
+    [movieDetailDataModel getMovieDetail: _dataToSend];
 }
 
 - (void)configTableView {
@@ -53,6 +36,25 @@
 - (void)configModel {
     movieDetailDataModel = [[MovieDetailDataModel alloc ] init];
     movieDetailDataModel.delegate = self;
+}
+
+- (void)configView {
+    _dataToSend = @{@"movieId": @(_movieId), @"language": @"en"};
+    _languageButton.title = @"ES";
+    _languageButton.target = self;
+    _languageButton.action = @selector(languageButtonPressed:);
+}
+
+- (IBAction)languageButtonPressed:(UIBarButtonItem*)btn {
+    [self showLoadingViewWithTransparent:true];
+    if ([[_dataToSend objectForKey:@"language"] isEqualToString:@"en"]) {
+        _dataToSend = @{@"movieId": @(_movieId), @"language": @"es"};
+        _languageButton.title = @"EN";
+    } else {
+        _dataToSend = @{@"movieId": @(_movieId), @"language": @"en"};
+        _languageButton.title = @"ES";
+    }
+    [movieDetailDataModel getMovieDetail: _dataToSend];
 }
 
 #pragma mark - UITableDataSource
@@ -104,5 +106,23 @@
 }
 
 
+#pragma mark - MovieDetailDelegate
+- (void)didReceiveMovieDetail:(nonnull NSDictionary *)response {
+    [self removeLoadingView];
+    if ([[response objectForKey:@"error"] boolValue]) {
+        __weak __typeof__(self) weakSelf = self;
+        [self showSimpleAlertControllerWithTitle: @"Lo sentimos" message: @"Ocurrió un problema inesperado. Por favor, intenta de nuevo." actionTitle: @"Cerrar" actionBlock: ^(UIAlertAction * _Nonnull action) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }];
+        
+    } else {
+        _movieDetail = response;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->_tableView setHidden: false];
+            [self->_tableView reloadData];
+        });
+
+    }
+}
 
 @end

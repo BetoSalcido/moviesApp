@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
     @property (nonatomic, weak) id <MovieDetailDelegate> delegate;
 
-- (void)getMovieDetail:(NSInteger)movieId;
+- (void)getMovieDetail:(NSDictionary*)movie;
 
 @end
 
